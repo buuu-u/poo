@@ -26,23 +26,23 @@ abstract class Unit{
         show("{$this->getName()} se esta moviendo hacia $direction");
     }
 
-    public function die(){
-        show("{$this->getName()} Muere");
-
-        exit();
-    }
-
     abstract public function attack(Unit $opponent);
 
     public function takeDamage($damage){
 
         $this->hp = $this->hp - $this->absorbDamage($damage);
 
-        show("{$this->getName()} ahora tiene {$this->getHp()} vidas");
+        show("{$this->getName()} ahora tiene {$this->getHp()} puntos de vida");
 
         if($this->hp <= 0 ){
             $this->die();
         }
+    }
+
+    public function die(){
+        show("{$this->getName()} Muere");
+
+        exit();
     }
 
     protected function absorbDamage($damage){
