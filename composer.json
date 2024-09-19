@@ -1,0 +1,23 @@
+{
+    "name": "styde/poo",
+    "description": "Proyecto demo",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Styde\\Poo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Victor Marcella"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "files":["src/helpers.php"],
+        "psr-4":{
+            "Styde\\": "src/"
+        }
+    }
+}
