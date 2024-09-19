@@ -2,14 +2,17 @@
 
 namespace Styde;
 
-abstract class Unit{
+class Unit{
 
 	protected int $hp=40;
 	protected $armor;
-	protected $sword;
+	protected $weapon;
 
-	public function __construct(protected string $name)
-	{}
+	public function __construct(protected string $name, Weapon $weapon)
+	{
+		$this->weapon = $weapon;
+		$this->armor = new Armors\MissingArmor();
+	}
 
 	public function getName()
 	{
@@ -26,19 +29,18 @@ abstract class Unit{
 		show("{$this->name} se mueve direccion $direction");
 	}
 
-	abstract public function attack(Unit $opponent);
-
-	public function calculateDamage($damage)
+	public function attack(Unit $opponent)
 	{
-		if ($this -> sword) {
-			$damage = $this->sword->doneDamage($damage);
-		}
-		return $damage;
+		$attack = $this->weapon->createAttack();
+
+		show($attack->getDescription($this, $opponent));
+
+		$opponent->takeDamage($attack);
 	}
 
-	public function takeDamage($damage)
+	public function takeDamage(Attack $attack)
 	{
-		$this->hp = $this->hp - $this->absorbDamage($damage);
+		$this->hp = $this->hp - $this->armor->absorbDamage($attack);
 
 		if ($this->hp < 0) {
 			$this->hp = 0;
@@ -52,15 +54,6 @@ abstract class Unit{
 		}
 	}
 
-	protected function absorbDamage($damage)
-	{	
-		if ($this->armor) {
-			$damage = $this->armor->absorbDamage($damage);
-		}
-
-		return $damage;
-	}
-
 	public function die()
 	{
 		show("{$this->name} muere");
@@ -71,8 +64,8 @@ abstract class Unit{
 		$this->armor = $armor;
 	}
 
-	public function setSword(Sword $sword = null)
+	public function setWeapon(Weapon $weapon)
 	{
-		$this->sword = $sword;
+		$this->weapon = $weapon;
 	}
 }
